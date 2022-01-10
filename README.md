@@ -1,5 +1,5 @@
 # @vitalets/logger
-Yet another logger.
+Pure typescript logger with levels and prefix support.
 
 ## Features
 * log levels

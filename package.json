@@ -1,5 +1,6 @@
 {
   "name": "@vitalets/logger",
+  "description": "Pure typescript logger with levels and prefix support",
   "version": "1.0.0",
   "type": "module",
   "main": "dist/index.js",
