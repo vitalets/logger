@@ -20,3 +20,6 @@ logger.log(42);
 ```
 npm i @vitalets/logger
 ```
+
+## License
+MIT @ [Vitaliy Potapov](https://github.com/vitalets)
