@@ -35,5 +35,13 @@
     "ts-node": "^10.4.0",
     "typescript": "^4.5.4"
   },
+  "author": {
+    "name": "Vitaliy Potapov",
+    "email": "noginsk@rambler.ru"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/vitalets/logger.git"
+  },
   "license": "MIT"
 }
