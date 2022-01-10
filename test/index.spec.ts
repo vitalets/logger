@@ -47,4 +47,17 @@ describe('logger', () => {
     ]);
   });
 
+  it('flushDebugBufferToError', () => {
+    const logger = new Logger({ level: 'info' });
+    logger.debug('debug', 42);
+    logger.debug('foo');
+    const e = new Error('bar');
+    logger.flushDebugBufferToError(e);
+    assert.deepEqual(e.stack!.split('\n').slice(-2), [
+      'debug 42',
+      'foo',
+    ]);
+    assert.deepEqual(logger.debugBuffer, []);
+  });
+
 });

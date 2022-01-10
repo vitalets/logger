@@ -1,19 +1,37 @@
 # @vitalets/logger
-Pure typescript logger with levels and prefix support.
+Pure typescript logger with support of prefix, levels, timers and buffering.
 
 ## Features
-* log levels
 * prefix
-* buffer messages for debug
-* types included
+* log levels
+* timers
+* buffering of debug messages
 
 ## Usage
 ```ts
 import { Logger } from '@vitalets/logger';
 
+// create logger with prefix and level
 const logger = new Logger({ prefix: '[db]:', level: 'info' });
 
+// log as usual
 logger.log(42);
+logger.info(42);
+logger.warn(42);
+logger.error(42);
+
+// buffer debug messages
+try {
+  logger.debug('hello'); // -> outputs nothing as level=info, but stores message in logger.debugBuffer
+  throw new Error('my error');
+} catch (e) {
+  throw logger.flushDebugBufferToError(e);
+}
+
+// measure time
+const timer = logger.logTime('uploading file...'); // -> 'uploading file...'
+...
+timer.end(); // -> 'uploading file... (1.234s)'
 ```
 
 ## Installation
