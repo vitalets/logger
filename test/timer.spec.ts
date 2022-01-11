@@ -9,30 +9,30 @@ describe('timer', () => {
   it('log start and time', () => {
     const logger = new Logger({ level: 'info' });
     const stubConsole = sinon.stub(console);
-    const timer = logger.logTime('foo');
+    const timer = logger.logTimer('foo');
     delay();
     timer.end();
-    assert.deepEqual(stubConsole.log.firstCall.args, [ 'foo' ]);
-    assert.match(stubConsole.log.secondCall.args[0], /foo \(\d\.\d\d\ds\)/);
+    assert.equal(stubConsole.log.firstCall.args.join(' '), 'foo');
+    assert.match(stubConsole.log.secondCall.args.join(' '), /foo \(\d\.\d\d\ds\)/);
   });
 
   it('log start without label', () => {
     const logger = new Logger({ level: 'info' });
     const stubConsole = sinon.stub(console);
-    const timer = logger.logTime();
+    const timer = logger.logTimer();
     delay();
     timer.end('foo');
-    assert.match(stubConsole.log.firstCall.args[0], /foo \(\d\.\d\d\ds\)/);
+    assert.match(stubConsole.log.firstCall.args.join(' '), /foo \(\d\.\d\d\ds\)/);
   });
 
   it('log time with custom label', () => {
     const logger = new Logger({ level: 'info' });
     const stubConsole = sinon.stub(console);
-    const timer = logger.logTime('foo');
+    const timer = logger.logTimer('foo');
     delay();
     timer.end('bar');
-    assert.deepEqual(stubConsole.log.firstCall.args, [ 'foo' ]);
-    assert.match(stubConsole.log.secondCall.args[0], /bar \(\d\.\d\d\ds\)/);
+    assert.equal(stubConsole.log.firstCall.args.join(' '), 'foo');
+    assert.match(stubConsole.log.secondCall.args.join(' '), /bar \(\d\.\d\d\ds\)/);
   });
 
 });

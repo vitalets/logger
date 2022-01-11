@@ -56,15 +56,16 @@ export class Logger {
   warn(..._args: unknown[]) { }
   error(..._args: unknown[]) { }
 
-  /** timer methods: output label and create timer */
-  debugTime(label?: string) { return this.startTimer('debug', label); }
-  logTime(label?: string) { return this.startTimer('log', label); }
-  infoTime(label?: string) { return this.startTimer('info', label); }
-  warnTime(label?: string) { return this.startTimer('warn', label); }
-  errorTime(label?: string) { return this.startTimer('error', label); }
+  /** timer methods: log args and create timer */
+  debugTimer(..._args: unknown[]) { return this.startTimer('debug', _args); }
+  logTimer(..._args: unknown[]) { return this.startTimer('log', _args); }
+  infoTimer(..._args: unknown[]) { return this.startTimer('info', _args); }
 
+  /**
+   * Attach debug buffer to error stack and clear buffer.
+   */
   flushDebugBufferToError(e: Error) {
-    if (e?.stack) {
+    if (e?.stack !== undefined) {
       e.stack = [ e.stack, ...this.debugBuffer ].join('\n');
       this.debugBuffer.length = 0;
     }
@@ -79,7 +80,6 @@ export class Logger {
       this[method] = (...args: unknown[]) => {
         // eslint-disable-next-line no-console
         console[method](...this.getArgsWithPrefix(args));
-        return this;
       };
     }
   }
@@ -91,7 +91,6 @@ export class Logger {
         const entry = this.getArgsWithPrefix(args).map(arg => String(arg)).join(' ');
         this.debugBuffer.push(entry);
         if (this.debugBuffer.length > debugBufferLength) this.debugBuffer.shift();
-        return this;
       };
     }
   }
@@ -100,8 +99,8 @@ export class Logger {
     return this.prefix ? [ this.prefix, ...args ] : args;
   }
 
-  protected startTimer(method: LogMethod, label?: string) {
-    if (label !== undefined) this[method](label);
-    return new Timer((msg: string) => this[method](msg), label);
+  protected startTimer(method: LogMethod, args: unknown[]) {
+    if (args.length) this[method](...args);
+    return new Timer((...args: unknown[]) => this[method](...args), args);
   }
 }

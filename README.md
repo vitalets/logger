@@ -29,7 +29,7 @@ try {
 }
 
 // measure time
-const timer = logger.logTime('uploading file...'); // -> 'uploading file...'
+const timer = logger.logTimer('uploading file...'); // -> 'uploading file...'
 ...
 timer.end(); // -> 'uploading file... (1.234s)'
 ```

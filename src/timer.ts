@@ -5,17 +5,15 @@
 export class Timer {
   protected start = Date.now();
 
-  constructor(protected outputFn: (msg: string) => void, protected label?: string) { }
+  constructor(protected outputFn: (...args: unknown[]) => void, protected args: unknown[]) { }
 
   get time() {
     return Date.now() - this.start;
   }
 
-  end(label?: string) {
-    const msg = [
-      label || this.label,
-      `(${(this.time / 1000).toFixed(3)}s)`,
-    ].filter(Boolean).join(' ');
-    this.outputFn(msg);
+  end(...args: unknown[]) {
+    const timeStr = `(${(this.time / 1000).toFixed(3)}s)`;
+    const finalArgs = (args.length ? args : this.args).concat([ timeStr ]);
+    this.outputFn(...finalArgs);
   }
 }
