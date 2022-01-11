@@ -38,6 +38,7 @@ timer.end(); // -> 'uploading file... (1.234s)'
 ```
 npm i @vitalets/logger
 ```
+> Note: this package is [ESM only](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c)
 
 ## License
 MIT @ [Vitaliy Potapov](https://github.com/vitalets)
