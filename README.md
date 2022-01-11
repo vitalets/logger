@@ -25,7 +25,7 @@ try {
   logger.debug('hello'); // -> outputs nothing as level=info, but stores message in logger.debugBuffer
   throw new Error('my error');
 } catch (e) {
-  throw logger.flushDebugBufferToError(e);
+  throw logger.flushDebugBufferToError(e); // attaches debug messages to error stack
 }
 
 // measure time
