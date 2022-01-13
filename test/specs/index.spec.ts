@@ -60,4 +60,12 @@ describe('logger', () => {
     assert.deepEqual(logger.debugBuffer, []);
   });
 
+  it('defaults', () => {
+    sinon.stub(Logger.defaults, 'prefix').get(() => 'foo');
+    const logger = new Logger();
+    const stubConsole = sinon.stub(console);
+    logger.log('log', 42);
+    sinon.assert.calledOnceWithMatch(stubConsole.log, 'foo', 'log', 42);
+  });
+
 });

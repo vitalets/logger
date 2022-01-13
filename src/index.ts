@@ -25,18 +25,17 @@ export type LogOptions = {
   debugBufferLength?: number;
 }
 
-export const defaults: Required<LogOptions> = {
-  level: 'info',
-  prefix: '',
-  debugBufferLength: 50,
-};
-
 export class Logger {
+  static defaults: Required<LogOptions> = {
+    level: 'info',
+    prefix: '',
+    debugBufferLength: 50,
+  };
   options: Required<LogOptions>;
   debugBuffer: string[] = [];
 
   constructor(options: LogOptions = {}) {
-    this.options = Object.assign({}, defaults, options);
+    this.options = Object.assign({}, Logger.defaults, options);
     this.bindMethods();
     this.bindDebugForBuffering();
   }
