@@ -1,5 +1,5 @@
 /**
- * Logger (without prefix)
+ * Logger
  */
 
 import { AsyncFn, Label, LabelOrAsyncFn, methodTime } from './time.js';
