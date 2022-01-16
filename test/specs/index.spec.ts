@@ -31,10 +31,25 @@ describe('logger', () => {
   });
 
   it('prefix', () => {
-    const logger = new Logger({ prefix: 'foo' });
+    const logger = new Logger().withPrefix('xxx');
+    const stubConsole = sinon.stub(console);
+    logger.debug('debug', 42);
+    logger.log('log', 42);
+    logger.info('info', 42);
+    logger.warn('warn', 42);
+    logger.error('error', 42);
+    sinon.assert.notCalled(stubConsole.debug);
+    sinon.assert.calledOnceWithMatch(stubConsole.log, 'xxx', 'log', 42);
+    sinon.assert.calledOnceWithMatch(stubConsole.info, 'xxx', 'info', 42);
+    sinon.assert.calledOnceWithMatch(stubConsole.warn, 'xxx', 'warn', 42);
+    sinon.assert.calledOnceWithMatch(stubConsole.error, 'xxx', 'error', 42);
+  });
+
+  it('prefix-prefix', () => {
+    const logger = new Logger().withPrefix('xxx').withPrefix('yyy');
     const stubConsole = sinon.stub(console);
     logger.log('log', 42);
-    sinon.assert.calledOnceWithMatch(stubConsole.log, 'foo', 'log', 42);
+    sinon.assert.calledOnceWithMatch(stubConsole.log, 'xxx yyy', 'log', 42);
   });
 
   it('debug buffer', () => {
@@ -61,11 +76,11 @@ describe('logger', () => {
   });
 
   it('defaults', () => {
-    sinon.stub(Logger.defaults, 'prefix').get(() => 'foo');
+    sinon.stub(Logger.defaults, 'level').get(() => 'debug');
     const logger = new Logger();
     const stubConsole = sinon.stub(console);
-    logger.log('log', 42);
-    sinon.assert.calledOnceWithMatch(stubConsole.log, 'foo', 'log', 42);
+    logger.debug('log', 42);
+    sinon.assert.calledOnceWithMatch(stubConsole.debug, 'log', 42);
   });
 
 });

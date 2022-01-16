@@ -1,6 +1,6 @@
 import assert from 'assert';
 import sinon from 'sinon';
-import { Logger } from '../src/index.js';
+import { Logger } from '../src/logger.js';
 
 type Assert = typeof assert.strict;
 type sinon = typeof sinon;
