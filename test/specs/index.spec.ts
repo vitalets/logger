@@ -31,6 +31,21 @@ describe('logger', () => {
   });
 
   it('prefix', () => {
+    const logger = new Logger({ level: 'info', prefix: 'xxx' });
+    const stubConsole = sinon.stub(console);
+    logger.debug('debug', 42);
+    logger.log('log', 42);
+    logger.info('info', 42);
+    logger.warn('warn', 42);
+    logger.error('error', 42);
+    sinon.assert.notCalled(stubConsole.debug);
+    sinon.assert.calledOnceWithMatch(stubConsole.log, 'xxx', 'log', 42);
+    sinon.assert.calledOnceWithMatch(stubConsole.info, 'xxx', 'info', 42);
+    sinon.assert.calledOnceWithMatch(stubConsole.warn, 'xxx', 'warn', 42);
+    sinon.assert.calledOnceWithMatch(stubConsole.error, 'xxx', 'error', 42);
+  });
+
+  it('withPrefix', () => {
     const logger = new Logger().withPrefix('xxx');
     const stubConsole = sinon.stub(console);
     logger.debug('debug', 42);
@@ -45,11 +60,18 @@ describe('logger', () => {
     sinon.assert.calledOnceWithMatch(stubConsole.error, 'xxx', 'error', 42);
   });
 
-  it('prefix-prefix', () => {
-    const logger = new Logger().withPrefix('xxx').withPrefix('yyy');
+  it('prefix + withPrefix', () => {
+    const logger = new Logger({ prefix: 'xxx' }).withPrefix('yyy');
     const stubConsole = sinon.stub(console);
     logger.log('log', 42);
-    sinon.assert.calledOnceWithMatch(stubConsole.log, 'xxx yyy', 'log', 42);
+    assert.deepEqual(stubConsole.log.getCall(0).args, [ 'xxx', 'yyy', 'log', 42 ]);
+  });
+
+  it('prefix + withPrefix + withPrefix', () => {
+    const logger = new Logger({ prefix: 'xxx' }).withPrefix('yyy').withPrefix('zzz');
+    const stubConsole = sinon.stub(console);
+    logger.log('log', 42);
+    assert.deepEqual(stubConsole.log.getCall(0).args, [ 'xxx', 'yyy', 'zzz', 'log', 42 ]);
   });
 
   it('debug buffer', () => {

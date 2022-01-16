@@ -12,9 +12,10 @@ Pure typescript logger with support of prefix, levels, time measure and debug bu
 import { Logger } from '@vitalets/logger';
 
 // create logger with prefix and level
-const logger = new Logger({ level: 'info' }).withPrefix('[db]:');
+const logger = new Logger({ prefix: '[db]:', level: 'info' });
 
 // log as usual
+logger.debug(42);
 logger.log(42);
 logger.info(42);
 logger.warn(42);
