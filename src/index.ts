@@ -56,13 +56,21 @@ export class Logger {
   logTime<T>(label: Label, fn: AsyncFn<T>): Promise<T>;
   logTime<T>(startlabel: Label, endLabel: Label, fn: AsyncFn<T>): Promise<T>;
   logTime<T>(a: LabelOrAsyncFn<T>, b?: LabelOrAsyncFn<T>, c?: AsyncFn<T>) {
-    return methodTime(arg => this.log(arg), a, b, c);
+    return methodTime(arg => this.log(arg), arg => this.log(arg), a, b, c);
   }
   debugTime<T>(fn: AsyncFn<T>): Promise<T>;
   debugTime<T>(label: Label, fn: AsyncFn<T>): Promise<T>;
   debugTime<T>(startlabel: Label, endLabel: Label, fn: AsyncFn<T>): Promise<T>;
   debugTime<T>(a: LabelOrAsyncFn<T>, b?: LabelOrAsyncFn<T>, c?: AsyncFn<T>) {
-    return methodTime(arg => this.debug(arg), a, b, c);
+    return methodTime(arg => this.debug(arg), arg => this.debug(arg), a, b, c);
+  }
+  // First label wirtten via logger.debug() and second via logger.log().
+  // Useful to keep logs clean but save message for debug when operation started.
+  debugLogTime<T>(fn: AsyncFn<T>): Promise<T>;
+  debugLogTime<T>(label: Label, fn: AsyncFn<T>): Promise<T>;
+  debugLogTime<T>(startlabel: Label, endLabel: Label, fn: AsyncFn<T>): Promise<T>;
+  debugLogTime<T>(a: LabelOrAsyncFn<T>, b?: LabelOrAsyncFn<T>, c?: AsyncFn<T>) {
+    return methodTime(arg => this.debug(arg), arg => this.log(arg), a, b, c);
   }
 
   /** wrap logger with prefix (keep debugBuffer in original logger) */

@@ -81,6 +81,18 @@ describe('log time', () => {
     assert.match(stubConsole.debug.getCall(1).args.join(' '), / \(\d\.\d\d\ds\)$/);
   });
 
+  it('debug log time', async () => {
+    const logger = new Logger({ level: 'debug' });
+    const stubConsole = sinon.stub(console);
+    const res = await logger.debugLogTime('foo', fn);
+    assert.equal(res, 42);
+    sinon.assert.callCount(stubConsole.debug, 1);
+    assert.equal(stubConsole.debug.getCall(0).args.join(' '), 'foo');
+    sinon.assert.callCount(stubConsole.log, 1);
+    assert.ok(stubConsole.log.getCall(0).args.join(' ').includes('foo'));
+    assert.match(stubConsole.log.getCall(0).args.join(' '), / \(\d\.\d\d\ds\)$/);
+  });
+
   it('prefix', async () => {
     const logger = new Logger({ level: 'info' }).withPrefix('xxx');
     const stubConsole = sinon.stub(console);

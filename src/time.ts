@@ -11,7 +11,8 @@ export type LabelOrAsyncFn<T> = Label | AsyncFn<T>;
  */
 // eslint-disable-next-line max-statements
 export async function methodTime<T>(
-  outputFn: (arg: unknown) => void,
+  outputStart: (arg: unknown) => void,
+  outputEnd: (arg: unknown) => void,
   a: LabelOrAsyncFn<T>,
   b?: LabelOrAsyncFn<T>,
   c?: AsyncFn<T>
@@ -22,12 +23,12 @@ export async function methodTime<T>(
   const defaultLabel = fn?.toString();
   const label1 = fnIndex > 0 ? a : defaultLabel;
   const label2 = fnIndex > 0 ? (fnIndex === 1 ? label1 : b) : defaultLabel;
-  if (label1) outputFn(label1);
+  if (label1) outputStart(label1);
   const start = Date.now();
   try {
     return await fn();
   } finally {
     const duration = ((Date.now() - start) / 1000).toFixed(3);
-    outputFn(`${label2 || defaultLabel} (${duration}s)`);
+    outputEnd(`${label2 || defaultLabel} (${duration}s)`);
   }
 }
