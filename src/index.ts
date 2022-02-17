@@ -92,6 +92,7 @@ export class Logger {
 
   protected bindMethods() {
     const levelIndex = LEVEL_METHOD.findIndex(({ level }) => level === this.level);
+    if (levelIndex === -1) throw new Error(`Invalid log level: ${this.level}`);
     for (let i = levelIndex; i < LEVEL_METHOD.length; i++) {
       const { method } = LEVEL_METHOD[ i ];
       if (!method) continue;

@@ -105,4 +105,9 @@ describe('logger', () => {
     sinon.assert.calledOnceWithMatch(stubConsole.debug, 'log', 42);
   });
 
+  it('invalid level', () => {
+    // @ts-expect-error level foo
+    assert.throws(() => new Logger({ level: 'foo' }), /Invalid log level: foo/);
+  });
+
 });
